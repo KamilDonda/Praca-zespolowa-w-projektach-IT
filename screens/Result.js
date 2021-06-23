@@ -3,6 +3,7 @@ import { StyleSheet, View, Text, TouchableOpacity, ImageBackground, AsyncStorage
 import EvilIcons from 'react-native-vector-icons/EvilIcons';
 
 import bg from '../assets/bg.png';
+import darkbg from '../assets/darkBackground.png';
 
 const getResultText = (correctRate) => {
   addToHistory()
@@ -129,7 +130,7 @@ const Result = ({ navigation, route }) => {
   };
 
   return (
-    <ImageBackground source={bg} style={[styles.back, themeBackgroundStyle]} resizeMode="stretch">
+    <ImageBackground source={colorScheme === 'light' ? bg : darkbg} style={[styles.back, themeBackgroundStyle]} resizeMode="stretch">
       <View style={styles.container}>
         <Text style={[styles.title, themeTitleStyle]}>{getResultText(result / questionsNumber)}</Text>
 

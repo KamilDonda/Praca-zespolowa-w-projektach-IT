@@ -50,6 +50,7 @@ const Question = ({ navigation }) => {
   const [isLoading, setIsLoading] = React.useState(true);
   const [message, setMessage] = React.useState('Download data in progress...');
   const [correctCounter, setCorrectCounter] = React.useState(0);
+  const [incorrectCounter, setIncorrectCounter] = React.useState(0);
 
   const colorScheme = useColorScheme();
   const themeBackgroundStyle = colorScheme === 'light' ? styles.lightThemeBackground : styles.darkThemeBackround
@@ -74,6 +75,10 @@ const Question = ({ navigation }) => {
   const answerQuestion = (isCorrect) => {
     if (isCorrect) {
       setCorrectCounter((prevState) => prevState + 1);
+    }
+    else
+    {
+      setIncorrectCounter((prevState) => prevState + 1);
     }
 
     if (questions.length - 1 <= currentQuestionId) {
@@ -101,7 +106,7 @@ const Question = ({ navigation }) => {
             </View>
           </>
         ) : (
-          <QuestionDetails question={questions[currentQuestionId]} answerQuestion={answerQuestion} />
+          <QuestionDetails question={questions[currentQuestionId]} answerQuestion={answerQuestion} correct={correctCounter} incorrect={incorrectCounter} />
         )}
       </View>
     </ImageBackground>

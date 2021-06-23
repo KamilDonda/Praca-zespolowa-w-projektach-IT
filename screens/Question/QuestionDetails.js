@@ -25,7 +25,14 @@ const styles = StyleSheet.create({
     textAlign: 'center',
   },
   timer: {
-    marginTop: 20,
+    marginTop: 25,
+  },
+  answers: {
+    width: '90%',
+    position: 'absolute',
+    bottom: 5,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
   },
   lightThemeTitle: {
     color: '#2D2D2D',
@@ -35,7 +42,7 @@ const styles = StyleSheet.create({
   }
 });
 
-const QuestionDetails = ({ question, answerQuestion }) => {
+const QuestionDetails = ({ question, answerQuestion, correct, incorrect }) => {
 
   const colorScheme = useColorScheme();
   const themeTitleStyle = colorScheme === 'light' ? styles.lightThemeTitle : styles.darkThemeTitle
@@ -179,6 +186,10 @@ const QuestionDetails = ({ question, answerQuestion }) => {
               </TouchableOpacity>
             ))}
           </View>
+          <View style={styles.answers}>
+            <Text style={[styles.name, themeTitleStyle]}>Correct: {correct}/{NUMBER}</Text>
+            <Text style={[styles.name, themeTitleStyle]}>Incorrect: {incorrect}/{NUMBER}</Text>
+          </View>
         </>
       );
     }
@@ -222,6 +233,10 @@ const QuestionDetails = ({ question, answerQuestion }) => {
               <Text style={[styles.name, themeTitleStyle]}>{he.decode(answer)}</Text>
             </TouchableOpacity>
           ))}
+        </View>
+        <View style={styles.answers}>
+          <Text style={[styles.name, themeTitleStyle]}>Correct: {correct}/{NUMBER}</Text>
+          <Text style={[styles.name, themeTitleStyle]}>Incorrect: {incorrect}/{NUMBER}</Text>
         </View>
       </>
     );
