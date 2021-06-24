@@ -63,7 +63,7 @@ const styles = StyleSheet.create({
 });
 
 const Result = ({ navigation, route }) => {
-  const { result, questionsNumber } = route.params;
+  const { questionsNumber } = route.params;
 
   const colorScheme = useColorScheme();
   const themeBackgroundStyle = colorScheme === 'light' ? styles.lightThemeBackground : styles.darkThemeBackround
@@ -121,7 +121,7 @@ const Result = ({ navigation, route }) => {
         id: index,
         date: day + '/' + month + '/' + year,
         time: hour + ':' + min,
-        answers: result + "/" + questionsNumber,
+        answers: FINALRESULT + "/" + questionsNumber,
         category: global.NAME,
         difficulty: global.DIFFICULTY,
     };
@@ -132,12 +132,12 @@ const Result = ({ navigation, route }) => {
   return (
     <ImageBackground source={colorScheme === 'light' ? bg : darkbg} style={[styles.back, themeBackgroundStyle]} resizeMode="stretch">
       <View style={styles.container}>
-        <Text style={[styles.title, themeTitleStyle]}>{getResultText(result / questionsNumber)}</Text>
+        <Text style={[styles.title, themeTitleStyle]}>{getResultText(FINALRESULT / questionsNumber)}</Text>
 
         <View style={styles.section}>
           <Text style={[styles.title, themeTitleStyle]}>Your result:</Text>
           <Text style={[styles.result, themeTitleStyle]}>
-            {result}/{questionsNumber}
+            {FINALRESULT}/{questionsNumber}
           </Text>
         </View>
 

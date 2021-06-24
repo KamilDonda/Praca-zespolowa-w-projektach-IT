@@ -49,8 +49,6 @@ const Question = ({ navigation }) => {
   const [currentQuestionId, setCurrentQuestionId] = React.useState(null);
   const [isLoading, setIsLoading] = React.useState(true);
   const [message, setMessage] = React.useState('Download data in progress...');
-  const [correctCounter, setCorrectCounter] = React.useState(0);
-  const [incorrectCounter, setIncorrectCounter] = React.useState(0);
 
   const colorScheme = useColorScheme();
   const themeBackgroundStyle = colorScheme === 'light' ? styles.lightThemeBackground : styles.darkThemeBackround
@@ -72,18 +70,10 @@ const Question = ({ navigation }) => {
     }
   }
 
-  const answerQuestion = (isCorrect) => {
-    if (isCorrect) {
-      setCorrectCounter((prevState) => prevState + 1);
-    }
-    else
-    {
-      setIncorrectCounter((prevState) => prevState + 1);
-    }
-
+  const answerQuestion = () => {
     if (questions.length - 1 <= currentQuestionId) {
       // navigation.pop()
-      navigation.navigate('Result', { result: correctCounter, questionsNumber: questions.length });
+      navigation.navigate('Result', { questionsNumber: questions.length });
       return;
     }
 
@@ -106,7 +96,7 @@ const Question = ({ navigation }) => {
             </View>
           </>
         ) : (
-          <QuestionDetails question={questions[currentQuestionId]} answerQuestion={answerQuestion} correct={correctCounter} incorrect={incorrectCounter} />
+          <QuestionDetails question={questions[currentQuestionId]} answerQuestion={answerQuestion} />
         )}
       </View>
     </ImageBackground>

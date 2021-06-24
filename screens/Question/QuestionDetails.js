@@ -42,7 +42,7 @@ const styles = StyleSheet.create({
   }
 });
 
-const QuestionDetails = ({ question, answerQuestion, correct, incorrect }) => {
+export default function QuestionDetails ({ question, answerQuestion }) {
 
   const colorScheme = useColorScheme();
   const themeTitleStyle = colorScheme === 'light' ? styles.lightThemeTitle : styles.darkThemeTitle
@@ -61,6 +61,9 @@ const QuestionDetails = ({ question, answerQuestion, correct, incorrect }) => {
   const [time, setTime] = React.useState(0)
   const [click, setClick] = React.useState(false)
   const [timer, setTimer] = React.useState()
+  const [correctCounter, setCorrectCounter] = React.useState(0);
+  const [incorrectCounter, setIncorrectCounter] = React.useState(0);
+  global.FINALRESULT = correctCounter
 
   if(questionNumber === 0)
   {
@@ -158,6 +161,7 @@ const QuestionDetails = ({ question, answerQuestion, correct, incorrect }) => {
                     setStop(false)
                     if(answer === question.correct_answer)
                     {
+                      setCorrectCounter((prevState) => prevState + 1);
                       index === 0 && (setBGColor([themeCorrectButtonStyle,themeButtonStyle,themeButtonStyle,themeButtonStyle]), setBColor([themeCorrectBorderStyle,themeBorderStyle,themeBorderStyle,themeBorderStyle]))
                       index === 1 && (setBGColor([themeButtonStyle,themeCorrectButtonStyle,themeButtonStyle,themeButtonStyle]), setBColor([themeBorderStyle,themeCorrectBorderStyle,themeBorderStyle,themeBorderStyle]))
                       index === 2 && (setBGColor([themeButtonStyle,themeButtonStyle,themeCorrectButtonStyle,themeButtonStyle]), setBColor([themeBorderStyle,themeBorderStyle,themeCorrectBorderStyle,themeBorderStyle]))
@@ -165,13 +169,15 @@ const QuestionDetails = ({ question, answerQuestion, correct, incorrect }) => {
                     }
                     else
                     {
+                      setIncorrectCounter((prevState) => prevState + 1);
                       index === 0 && (setBGColor([themeBadButtonStyle,themeButtonStyle,themeButtonStyle,themeButtonStyle]), setBColor(['#A50000',themeBorderStyle,themeBorderStyle,themeBorderStyle]))
                       index === 1 && (setBGColor([themeButtonStyle,themeBadButtonStyle,themeButtonStyle,themeButtonStyle]), setBColor([themeBorderStyle,'#A50000',themeBorderStyle,themeBorderStyle]))
                       index === 2 && (setBGColor([themeButtonStyle,themeButtonStyle,themeBadButtonStyle,themeButtonStyle]), setBColor([themeBorderStyle,themeBorderStyle,'#A50000',themeBorderStyle]))
                       index === 3 && (setBGColor([themeButtonStyle,themeButtonStyle,themeButtonStyle,themeBadButtonStyle]), setBColor([themeBorderStyle,themeBorderStyle,themeBorderStyle,'#A50000']))
                     }
                     setTimeout(() => {
-                      answerQuestion(answer === question.correct_answer)
+                      console.log("wow: " + correctCounter)
+                      answerQuestion(correctCounter)
                       setBGColor([themeButtonStyle,themeButtonStyle,themeButtonStyle,themeButtonStyle])
                       setBColor([themeBorderStyle,themeBorderStyle,themeBorderStyle,themeBorderStyle])
                       setQuestionNumber(0)
@@ -187,8 +193,8 @@ const QuestionDetails = ({ question, answerQuestion, correct, incorrect }) => {
             ))}
           </View>
           <View style={styles.answers}>
-            <Text style={[styles.name, themeTitleStyle]}>Correct: {correct}/{NUMBER}</Text>
-            <Text style={[styles.name, themeTitleStyle]}>Incorrect: {incorrect}/{NUMBER}</Text>
+            <Text style={[styles.name, themeTitleStyle]}>Correct: {correctCounter}/{NUMBER}</Text>
+            <Text style={[styles.name, themeTitleStyle]}>Incorrect: {incorrectCounter}/{NUMBER}</Text>
           </View>
         </>
       );
@@ -235,12 +241,10 @@ const QuestionDetails = ({ question, answerQuestion, correct, incorrect }) => {
           ))}
         </View>
         <View style={styles.answers}>
-          <Text style={[styles.name, themeTitleStyle]}>Correct: {correct}/{NUMBER}</Text>
-          <Text style={[styles.name, themeTitleStyle]}>Incorrect: {incorrect}/{NUMBER}</Text>
+          <Text style={[styles.name, themeTitleStyle]}>Correct: {correctCounter}/{NUMBER}</Text>
+          <Text style={[styles.name, themeTitleStyle]}>Incorrect: {incorrectCounter}/{NUMBER}</Text>
         </View>
       </>
     );
   }
 };
-
-export default QuestionDetails;
