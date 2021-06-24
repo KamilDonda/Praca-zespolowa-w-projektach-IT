@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, View, ImageBackground, TouchableOpacity, Text, ScrollView, AsyncStorage, useColorScheme } from 'react-native';
+import { StyleSheet, View, ImageBackground, TouchableOpacity, Text, ScrollView, AsyncStorage, useColorScheme, Alert } from 'react-native';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 
 import bg from '../assets/bg.png';
@@ -143,6 +143,26 @@ export default function History({ navigation }) {
     loadHistory();
   }, []);
 
+  deleteItem = (item) => {
+    Alert.alert(
+       'Usuwanie elementu',
+       'Czy chcesz usunąć dany element?',
+       [
+         {text: 'NIE', onPress: () => console.warn('Element pozostawiono'), style: 'cancel'},
+         {text: 'TAK', onPress: () => usuwanie(item)},
+       ]
+     );
+  }
+  
+  usuwanie = (item) => {
+    var arr = history.historyArray
+    var pos = arr.indexOf(item)
+    arr.splice(pos,1)
+    setHistory(arr)
+    AsyncStorage.setItem('history',JSON.stringify(arr));
+    console.warn('Usunięto element')
+  }
+
   // clearAsync = ()=> {
   //   history.historyArray = 0;
   //   AsyncStorage.setItem('history',JSON.stringify(history.historyArray));
@@ -157,7 +177,8 @@ export default function History({ navigation }) {
   const historyList = history.historyArray.map((item) => (
     <TouchableOpacity
       key = {item.id}
-      style = {[styles.button, themeButtonStyle]}>
+      style = {[styles.button, themeButtonStyle]}
+      onPress = {() => deleteItem(item)}>
       <View style = {styles.row1}>
         <Text style = {[styles.date, themeTextStyle]}>{item.date}</Text>
         <Text style = {[styles.time, themeTextStyle]}>{item.time}</Text>
