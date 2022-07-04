@@ -7,11 +7,11 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 42,
     color: '#2D2D2D',
-    marginTop: 22,
+    marginTop: 12,
   },
   question: {
     margin: 10,
-    marginTop: 20,
+    marginTop: 10,
     justifyContent: 'center',
     alignItems: 'center',
   },

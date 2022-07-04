@@ -18,7 +18,7 @@ const styles = StyleSheet.create({
   },
   title: {
     fontSize: 42,
-    marginTop: 22,
+    marginTop: 12,
   },
   logo: {
     width: 290,

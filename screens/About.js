@@ -32,11 +32,11 @@ export default function About({ navigation }) {
     arrow: {
       position: 'absolute',
       left: 20,
-      top: 40,
+      top: 30,
     },
     title: {
       fontSize: 42,
-      marginTop: 22,
+      marginTop: 12,
     },
     authorsStyle: {
       alignSelf: 'stretch',

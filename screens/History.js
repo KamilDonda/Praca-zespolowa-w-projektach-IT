@@ -1,5 +1,6 @@
 import React from 'react';
-import { StyleSheet, View, ImageBackground, TouchableOpacity, Text, ScrollView, AsyncStorage, useColorScheme } from 'react-native';
+import { StyleSheet, View, ImageBackground, TouchableOpacity, Text, ScrollView, useColorScheme } from 'react-native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 
 import bg from '../assets/bg.png';
@@ -32,7 +33,7 @@ export default function History({ navigation }) {
     arrow: {
       position: 'absolute',
       left: 20,
-      top: 40,
+      top: 30,
     },
     button: {
       width: 320,
@@ -55,7 +56,7 @@ export default function History({ navigation }) {
     },
     title: {
       fontSize: 42,
-      marginTop: 22,
+      marginTop: 12,
     },
     row1: {
       width: 300,
@@ -143,7 +144,7 @@ export default function History({ navigation }) {
     loadHistory();
   }, []);
 
-  // clearAsync = ()=> {
+  // const clearAsync = ()=> {
   //   history.historyArray = 0;
   //   AsyncStorage.setItem('history',JSON.stringify(history.historyArray));
   // }

@@ -1,5 +1,16 @@
 import React from 'react';
-import { StyleSheet, View, Image, Text, TouchableOpacity, ImageBackground, useColorScheme } from 'react-native';
+import {
+  StyleSheet,
+  View,
+  Image,
+  Text,
+  TouchableOpacity,
+  ImageBackground,
+  useColorScheme,
+  StatusBar,
+  BackHandler,
+  Alert,
+} from 'react-native';
 
 import bg from '../assets/bg.png';
 import darkbg from '../assets/darkBackground.png';
@@ -34,32 +45,59 @@ export default function Home({ navigation }) {
       height: 175,
       marginTop: 185,
     },
-    lightThemeBackground:{
-      backgroundColor: '#FAFAFA'
+    lightThemeBackground: {
+      backgroundColor: '#FAFAFA',
     },
     darkThemeBackround: {
-      backgroundColor: '#2D2D2D'
+      backgroundColor: '#2D2D2D',
     },
     lightThemeButton: {
       backgroundColor: '#FF5656',
     },
     darkThemeButton: {
       backgroundColor: '#CC8406',
-    }
+    },
   });
 
   const colorScheme = useColorScheme();
-  const themeBackgroundStyle = colorScheme === 'light' ? styles.lightThemeBackground : styles.darkThemeBackround
-  const themeButtonStyle = colorScheme === 'light' ? styles.lightThemeButton : styles.darkThemeButton
+  const themeBackgroundStyle =
+    colorScheme === 'light' ? styles.lightThemeBackground : styles.darkThemeBackround;
+  const themeButtonStyle = colorScheme === 'light' ? styles.lightThemeButton : styles.darkThemeButton;
 
   const startButton = (
-    <TouchableOpacity style={[styles.button, themeButtonStyle]} onPress={() => navigation.navigate('Category')}>
+    <TouchableOpacity
+      style={[styles.button, themeButtonStyle]}
+      onPress={() => navigation.navigate('Category')}
+    >
       <Text style={styles.text}>Start</Text>
     </TouchableOpacity>
   );
 
+  const backAction = () => {
+    Alert.alert('Hold on!', 'Are you sure you want to go back?', [
+      {
+        text: 'Cancel',
+        onPress: () => null,
+        style: 'cancel',
+      },
+      { text: 'YES', onPress: () => BackHandler.exitApp() },
+    ]);
+    return true;
+  };
+
+  React.useEffect(() => {
+    BackHandler.addEventListener('hardwareBackPress', backAction);
+
+    return () => BackHandler.removeEventListener('hardwareBackPress', backAction);
+  }, []);
+
   return (
-    <ImageBackground source={colorScheme === 'light' ? bg : darkbg} style={[styles.back, themeBackgroundStyle]} resizeMode="stretch">
+    <ImageBackground
+      source={colorScheme === 'light' ? bg : darkbg}
+      style={[styles.back, themeBackgroundStyle]}
+      resizeMode="stretch"
+    >
+      <StatusBar translucent={false} />
       <View style={styles.container}>
         <View>
           <Image source={colorScheme === 'light' ? logo : whiteLogo} style={styles.logo} />

@@ -1,12 +1,21 @@
 import React from 'react';
-import { StyleSheet, View, Text, TouchableOpacity, ImageBackground, AsyncStorage, useColorScheme } from 'react-native';
+import {
+  StyleSheet,
+  View,
+  Text,
+  TouchableOpacity,
+  ImageBackground,
+  useColorScheme,
+  BackHandler,
+} from 'react-native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import EvilIcons from 'react-native-vector-icons/EvilIcons';
 
 import bg from '../assets/bg.png';
 import darkbg from '../assets/darkBackground.png';
 
 const getResultText = (correctRate) => {
-  addToHistory()
+  addToHistory();
 
   if (correctRate > 0.8) {
     return 'Well done!';
@@ -48,11 +57,10 @@ const styles = StyleSheet.create({
     marginTop: 22,
   },
   lightThemeBackground: {
-    backgroundColor: '#FAFAFA'
+    backgroundColor: '#FAFAFA',
   },
-  darkThemeBackround: 
-  {
-    backgroundColor: '#2D2D2D'
+  darkThemeBackround: {
+    backgroundColor: '#2D2D2D',
   },
   lightThemeTitle: {
     color: '#2D2D2D',
@@ -66,73 +74,75 @@ const Result = ({ navigation, route }) => {
   const { questionsNumber } = route.params;
 
   const colorScheme = useColorScheme();
-  const themeBackgroundStyle = colorScheme === 'light' ? styles.lightThemeBackground : styles.darkThemeBackround
-  const themeTitleStyle = colorScheme === 'light' ? styles.lightThemeTitle : styles.darkThemeTitle
-  
+  const themeBackgroundStyle =
+    colorScheme === 'light' ? styles.lightThemeBackground : styles.darkThemeBackround;
+  const themeTitleStyle = colorScheme === 'light' ? styles.lightThemeTitle : styles.darkThemeTitle;
+
+  React.useEffect(() => {
+    const backHandler = BackHandler.addEventListener('hardwareBackPress', () => true)
+    return () => backHandler.remove()
+  }, [])
+
   loadHistory = async () => {
-    try{
-      if(history.historyArray.length == 0){
-        if(JSON.parse(await AsyncStorage.getItem('history')) != 0)
+    try {
+      if (history.historyArray.length == 0) {
+        if (JSON.parse(await AsyncStorage.getItem('history')) != 0)
           history.historyArray = JSON.parse(await AsyncStorage.getItem('history'));
       }
-    }catch(error){
+    } catch (error) {
       alert(error);
     }
-    addToHistory()
-  }
+    addToHistory();
+  };
 
   addToHistory = () => {
     let index;
 
-    if(history.historyArray.length == 0)
-      index = 0;
-    else 
-      index = history.historyArray[history.historyArray.length - 1].id + 1;
+    if (history.historyArray.length == 0) index = 0;
+    else index = history.historyArray[history.historyArray.length - 1].id + 1;
 
-    global.NAME = global.NAME.replace('Entertainment: ','');
-    global.NAME = global.NAME.replace('Science: ','');
+    global.NAME = global.NAME.replace('Entertainment: ', '');
+    global.NAME = global.NAME.replace('Science: ', '');
 
-    if(global.DIFFICULTY == "")
-      global.DIFFICULTY = "Any" 
-    if(global.NAME == "")
-      global.NAME = "Any" 
-    if(global.NAME == "Japanese Anime & Manga")
-      global.NAME = "Japanese Anime"
-    
+    if (global.DIFFICULTY == '') global.DIFFICULTY = 'Any';
+    if (global.NAME == '') global.NAME = 'Any';
+    if (global.NAME == 'Japanese Anime & Manga') global.NAME = 'Japanese Anime';
 
     let day = new Date().getDate();
     let month = new Date().getMonth() + 1;
     let year = new Date().getFullYear();
 
-    if(day < 10)
-      day = "0" + day;
-    if(month < 10)
-      month = "0" + month;
+    if (day < 10) day = '0' + day;
+    if (month < 10) month = '0' + month;
 
-    let hour = new Date().getHours(); 
-    let min = new Date().getMinutes();  
+    let hour = new Date().getHours();
+    let min = new Date().getMinutes();
 
-    if(hour < 10)
-      hour = "0" + hour;
-    if(min < 10)
-      min = "0" + min;
+    if (hour < 10) hour = '0' + hour;
+    if (min < 10) min = '0' + min;
 
     let data = {
-        id: index,
-        date: day + '/' + month + '/' + year,
-        time: hour + ':' + min,
-        answers: FINALRESULT + "/" + questionsNumber,
-        category: global.NAME,
-        difficulty: global.DIFFICULTY,
+      id: index,
+      date: day + '/' + month + '/' + year,
+      time: hour + ':' + min,
+      answers: FINALRESULT + '/' + questionsNumber,
+      category: global.NAME,
+      difficulty: global.DIFFICULTY,
     };
     history.historyArray.push(data);
-    AsyncStorage.setItem('history',JSON.stringify(history.historyArray));
+    AsyncStorage.setItem('history', JSON.stringify(history.historyArray));
   };
 
   return (
-    <ImageBackground source={colorScheme === 'light' ? bg : darkbg} style={[styles.back, themeBackgroundStyle]} resizeMode="stretch">
+    <ImageBackground
+      source={colorScheme === 'light' ? bg : darkbg}
+      style={[styles.back, themeBackgroundStyle]}
+      resizeMode="stretch"
+    >
       <View style={styles.container}>
-        <Text style={[styles.title, themeTitleStyle]}>{getResultText(FINALRESULT / questionsNumber)}</Text>
+        <Text style={[styles.title, themeTitleStyle]}>
+          {getResultText(FINALRESULT / questionsNumber)}
+        </Text>
 
         <View style={styles.section}>
           <Text style={[styles.title, themeTitleStyle]}>Your result:</Text>

@@ -17,11 +17,11 @@ export default function Category({ navigation }) {
     arrow: {
       position: 'absolute',
       left: 20,
-      top: 40,
+      top: 30,
     },
     title: {
       fontSize: 42,
-      marginTop: 22,
+      marginTop: 12,
     },
     button: {
       width: 320,
